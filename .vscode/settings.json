@@ -1,0 +1,8 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.formatting.provider": "yapf",
+    "editor.rulers": [
+        80
+    ],
+    "editor.formatOnSave": true,
+}
