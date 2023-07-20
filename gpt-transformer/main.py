@@ -1,3 +1,6 @@
+# MIT License
+# Copyright (c) 2023 Bea Stollnitz
+
 import tiktoken
 import torch
 

@@ -1,3 +1,7 @@
+# MIT License
+# Copyright (c) 2018 Alexander Rush
+
+
 import torch
 import torch.nn.functional as F
 import torch.nn as nn
