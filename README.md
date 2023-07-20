@@ -14,5 +14,5 @@ conda env create -f environment.yml
 conda activate gpt-transformer
 ```
 
-- Within VS Code, press Ctrl+Shift+P to open the Command Palette, type "Python: Select Interpreter," and select the the "gpt-transformer" interpreter.
+- Within VS Code, press Ctrl+Shift+P to open the Command Palette, type "Python: Select Interpreter," and select the "gpt-transformer" interpreter.
 - Run the main.py file by pressing F5 within Visual Studio.
