@@ -38,28 +38,33 @@ def generate_next_token(model, tokens):
     return next_token
 
 
-# Define constants.
-input_text = "A long time ago"
-new_token_count = 10
-batch_size = 1
-block_size = 1024
+def main():
+    # Define constants.
+    input_text = "A long time ago"
+    new_token_count = 10
+    batch_size = 1
+    block_size = 1024
 
-# Tokenize the input text.
-encoding, tokens = tokenize(input_text, batch_size)
+    # Tokenize the input text.
+    encoding, tokens = tokenize(input_text, batch_size)
 
-# Create the model.
-model = make_model(encoding.n_vocab)
+    # Create the model.
+    model = make_model(encoding.n_vocab)
 
-# Iterate until we've generated enough new tokens.
-for _ in range(new_token_count):
-    block_tokens = limit_sequence_length(tokens,
-                                         block_size)  # (batch_size, seq_len)
-    next_token = generate_next_token(model, block_tokens)  # (batch_size, 1)
-    tokens = torch.cat([tokens, next_token],
-                       dim=1)  # (batch_size, input_seq_len + 1)
+    # Iterate until we've generated enough new tokens.
+    for _ in range(new_token_count):
+        block_tokens = limit_sequence_length(
+            tokens, block_size)  # (batch_size, seq_len)
+        next_token = generate_next_token(model, block_tokens)  # (batch_size, 1)
+        tokens = torch.cat([tokens, next_token],
+                           dim=1)  # (batch_size, input_seq_len + 1)
 
-# Print each of the generated token sequences.
-print("Output:")
-print(tokens)
-for row in tokens:
-    print(encoding.decode(row.tolist()))
+    # Print each of the generated token sequences.
+    print("Output:")
+    print(tokens)
+    for row in tokens:
+        print(encoding.decode(row.tolist()))
+
+
+if __name__ == "__main__":
+    main()
