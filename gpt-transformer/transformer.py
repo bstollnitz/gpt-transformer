@@ -1,6 +1,8 @@
 # MIT License
 # Copyright (c) 2018 Alexander Rush
-
+# Original source:
+# http://nlp.seas.harvard.edu/annotated-transformer/
+# https://github.com/harvardnlp/annotated-transformer/
 
 import torch
 import torch.nn.functional as F
@@ -20,7 +22,6 @@ import math, copy
 # block_size     = length of the block to be decoded (1024 in our scenario)
 
 
-
 # Used to convert the tokens into vectors of dimension d_model.
 class Embeddings(nn.Module):
 
@@ -32,7 +33,7 @@ class Embeddings(nn.Module):
     # input x: (batch_size, seq_len)
     # output: (batch_size, seq_len, d_model)
     def forward(self, x):
-        out =  self.lut(x) * math.sqrt(self.d_model)
+        out = self.lut(x) * math.sqrt(self.d_model)
         return out
 
 
@@ -80,14 +81,14 @@ def attention(query, key, value, mask=None, dropout=None):
     d_k = query.size(-1)
     # (batch_size, h, seq_len, d_k) x (batch_size, h, d_k, seq_len) -> (batch_size, h, seq_len, seq_len)
     # This does a dot product between all the queries and all the keys.
-    # We divide by sqrt(d_k) to keep the variance of the scores at around 1. 
-    # Keeping the variance of scores low prevents the softmax operation 
+    # We divide by sqrt(d_k) to keep the variance of the scores at around 1.
+    # Keeping the variance of scores low prevents the softmax operation
     # later on from returning one-hot vectors.
     scores = torch.matmul(query, key.transpose(-2, -1)) / math.sqrt(d_k)
     if mask is not None:
         scores = scores.masked_fill(mask == 0, -1e9)
-    p_attn = F.softmax(scores, dim=-1) # (batch_size, h, seq_len, seq_len)
-    # After the softmax, "p_attn" contains probabilities of how related each 
+    p_attn = F.softmax(scores, dim=-1)  # (batch_size, h, seq_len, seq_len)
+    # After the softmax, "p_attn" contains probabilities of how related each
     # token is to all other other tokens in the sequence, or the affinities
     # between tokens.
     if dropout is not None:
@@ -96,7 +97,7 @@ def attention(query, key, value, mask=None, dropout=None):
     # the the rows of "value", where the weights are the probabilities in
     # "p_attn".
     # (batch_size, h, seq_len, seq_len) x (batch_size, h, seq_len, d_k) -> (batch_size, h, seq_len, d_k)
-    return torch.matmul(p_attn, value), p_attn 
+    return torch.matmul(p_attn, value), p_attn
 
 
 def clones(module, N):
